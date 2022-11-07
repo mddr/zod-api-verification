@@ -1,13 +1,16 @@
-import { Component } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Message } from '@zod-api-verification/api-interfaces';
+import { ZodHttpService } from './zod-http.service';
+import { Component, inject } from '@angular/core';
+import { AsyncPipe, JsonPipe } from '@angular/common';
 
 @Component({
   selector: 'zod-api-verification-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
+  standalone: true,
+  imports: [AsyncPipe, JsonPipe],
 })
 export class AppComponent {
-  hello$ = this.http.get<Message>('/api/hello');
-  constructor(private http: HttpClient) {}
+  private readonly apiService = inject(ZodHttpService);
+
+  exampleData$ = this.apiService.fetchData();
 }
